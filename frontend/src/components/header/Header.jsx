@@ -1,39 +1,54 @@
 import React from "react";
-import { AppBar, Toolbar, Typography, Button, IconButton, Box } from "@mui/material";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
-import { useState } from "react";
-import { styles } from "./style";
-const Header = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+import { useMsal } from "@azure/msal-react";
+import { loginRequest } from "../../authconfig";
+import ReusableButton from "../common/ReusableButton";
+import styles from "./Header.module.css";
 
-  const handleAuth = () => {
-    setIsAuthenticated(!isAuthenticated);
+const Header = () => {
+  const { instance, accounts } = useMsal();
+  const isAuthenticated = accounts.length > 0;
+
+  const handleLogin = async () => {
+    try {
+      await instance.loginPopup(loginRequest);
+    } catch (error) {
+      console.error("Login failed", error);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await instance.logoutPopup();
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
   };
 
   return (
-    <AppBar position="fixed" sx={styles.container}>
-      <Toolbar>
+    <AppBar position="fixed" className={styles.header}>
+      <Toolbar className={styles.toolbar}>
         {/* Logo */}
-        <Typography variant="h6" component="div" sx={styles.heading}>
+        <Typography variant="h6" className={styles.logo}>
           Wholesaler Portal
         </Typography>
 
-        {/* Conditional Rendering of Login/Logout */}
         {!isAuthenticated ? (
-          <Button color="inherit" startIcon={<LoginIcon />} onClick={handleAuth}>
-            Login
-          </Button>
+          <ReusableButton
+          label="Login with Azure AD"
+          onClick={handleLogin}
+          className={styles.authButton}
+          icon={<LoginIcon />}
+        />
         ) : (
-          <>
-            <IconButton color="inherit">
-              <AccountCircleIcon />
-            </IconButton>
-            <Button color="inherit" startIcon={<LogoutIcon />} onClick={handleAuth}>
-              Logout
-            </Button>
-          </>
+          <ReusableButton
+          label="Logout"
+          onClick={handleLogout}
+          className={styles.authButton}
+          icon={<LogoutIcon />}
+        />
         )}
       </Toolbar>
     </AppBar>
