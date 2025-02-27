@@ -1,0 +1,25 @@
+.header {
+  background-color: #1976d2;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
+}
+
+.authButton {
+  color: white !important;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.authButton:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
