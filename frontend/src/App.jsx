@@ -2,6 +2,7 @@ import React from "react";
 import Header from "./components/header/Header";
 import { useIsAuthenticated } from "@azure/msal-react";
 import { Login } from "./components/login/Login";
+import WholesalerTable from "./components/table/WholesalerTable";
 
 function App() {
   const isAuthenticated = useIsAuthenticated();
@@ -14,6 +15,7 @@ function App() {
         <>
           <Header />
           <main style={{ padding: "20px", marginTop: "80px" }}>
+            <WholesalerTable />
           </main>
         </>
       )}
