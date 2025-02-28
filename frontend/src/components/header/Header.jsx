@@ -61,7 +61,12 @@ const Header = () => {
         </Toolbar>
       </AppBar>
 
-      <div className={styles.dropdownContainer}>
+      <div className={styles.actionContainer}>
+        <ReusableButton
+          label="Approve"
+          onClick={() => console.log("Approve clicked")}
+          className={styles.approveButton}
+        />
         <DropdownMenu options={["Admin", "Customer"]} onSelect={handleRoleSelect} />
       </div>
     </>
