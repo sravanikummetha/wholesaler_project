@@ -1,0 +1,21 @@
+.dropdown-button {
+    background-color: #1976d2;
+    color: white;
+    width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-transform: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-button:hover {
+    background-color: #1257a3;
+}
+
+.menu-paper {
+    width: 150px !important;
+}

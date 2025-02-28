@@ -23,3 +23,11 @@
 .authButton:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
+
+.dropdownContainer {
+  margin-top: 15px;
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  z-index: 1000;
+}
