@@ -21,13 +21,11 @@ exports.createWholesaler = async (req, res) => {
 exports.getAllWholesalerData = async (req, res) => {
   try {
     const newData = await Wholesaler.find();
-    console.log(newData, "data");
     res.status(201).json({
       status: "Success",
       data: newData,
     });
   } catch (err) {
-    console.log(err);
     res.status(400).json({
       status: "fail",
       message: JSON.stringify(err),
