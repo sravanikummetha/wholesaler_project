@@ -20,7 +20,10 @@
 
 .login-title {
     margin-right: 110px;
+}
 
+.login-button {
+    margin-right: 180px !important;
 }
 
 .login-button:hover {

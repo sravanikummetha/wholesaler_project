@@ -1,8 +1,8 @@
 import { useMsal } from "@azure/msal-react";
-import { loginRequest } from "../../authconfig";
+import { loginRequest } from "../../authConfig";
 import styles from "./Login.module.css";
-import loginBgImage from "../../assets/Login-Image.jpg";
-import ReusableButton from "../common/ReusableButton";
+import loginBgImage from "../../assets/login-Image.jpg";
+import ReusableButton from "../common/reusableButton";
 
 export const Login = () => {
     const { instance } = useMsal();
@@ -22,13 +22,11 @@ export const Login = () => {
         >
             <div className={styles["login-content"]}>
                 <h2 className={styles["login-title"]}>Welcome to Wholesaler Portal</h2>
-                <ReusableButton 
+                <ReusableButton
                     label="Login with Portal ID"
                     onClick={handleLogin}
-                    lassName={styles["login-button"]}
-                    sx={{ marginRight: "180px" }}
+                    className={styles["login-button"]}
                 />
-
             </div>
         </div>
     );

@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@mui/material";
 
-const ReusableButton = ({ label, onClick, disabled, className, icon, sx }) => {
+const ReusableButton = ({ label, onClick, disabled, className, icon }) => {
   return (
     <Button
       onClick={onClick}
@@ -9,7 +9,6 @@ const ReusableButton = ({ label, onClick, disabled, className, icon, sx }) => {
       className={className}
       startIcon={icon ? icon : null}  
       variant="contained"
-      sx={sx}
     >
       {label}
     </Button>
