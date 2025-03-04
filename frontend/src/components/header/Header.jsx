@@ -3,10 +3,10 @@ import { AppBar, Toolbar, Typography } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
 import { useMsal } from "@azure/msal-react";
-import { loginRequest } from "../../authconfig";
-import ReusableButton from "../common/ReusableButton";
+import { loginRequest } from "../../authConfig";
+import ReusableButton from "../common/reusableButton";
 import styles from "./Header.module.css";
-import DropdownMenu from "../common/dropdown/DropdownMenu";
+import DropdownMenu from "../common/dropdown/dropdownMenu";
 
 const Header = () => {
   const { instance, accounts } = useMsal();

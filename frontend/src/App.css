@@ -40,3 +40,14 @@
 .read-the-docs {
   color: #888;
 }
+
+.appContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+}
+
+.mainContent {
+  padding: 20px;
+  margin-top: 80px;
+}

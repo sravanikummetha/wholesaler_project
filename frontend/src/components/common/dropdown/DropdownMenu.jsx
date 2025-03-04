@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Menu, MenuItem } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ReusableButton from "../ReusableButton";
-import styles from "./DropdownMenu.module.css";
+import ReusableButton from "../reusableButton";
+import styles from "./dropdownMenu.module.css";
 
 const DropdownMenu = ({ options, onSelect }) => {
     const [anchorEl, setAnchorEl] = useState(null);

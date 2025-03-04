@@ -1,20 +1,21 @@
 import React from "react";
-import Header from "./components/header/Header";
+import Header from "./components/header/header";
 import { useIsAuthenticated } from "@azure/msal-react";
-import { Login } from "./components/login/Login";
-import WholesalerTable from "./components/table/WholesalerTable";
+import { Login } from "./components/login/login";
+import WholesalerTable from "./components/table/wholesalerTable";
+import "./App.css";
 
 function App() {
   const isAuthenticated = useIsAuthenticated();
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", width: "100vw" }}>
+    <div className="appContainer">
       {!isAuthenticated ? (
         <Login />
       ) : (
         <>
           <Header />
-          <main style={{ padding: "20px", marginTop: "80px" }}>
+          <main className="mainContent">
             <WholesalerTable />
           </main>
         </>
