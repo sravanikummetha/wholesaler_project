@@ -15,14 +15,13 @@ const Header = () => {
 
   const handleRoleSelect = (role) => {
     setSelectedRole(role);
-    console.log("Selected Role:", role);
   };
 
   const handleLogin = async () => {
     try {
       await instance.loginPopup(loginRequest);
     } catch (error) {
-      console.error("Login failed", error);
+      alert("Login failed. Please try again!");
     }
   };
 
@@ -30,7 +29,7 @@ const Header = () => {
     try {
       await instance.logoutPopup();
     } catch (error) {
-      console.error("Logout failed", error);
+      alert("Login failed. Please try again!");
     }
   };
 
@@ -64,10 +63,13 @@ const Header = () => {
       <div className={styles.actionContainer}>
         <ReusableButton
           label="Approve"
-          onClick={() => console.log("Approve clicked")}
+          onClick={() => alert("Approve clicked")}
           className={styles.approveButton}
         />
-        <DropdownMenu options={["Admin", "Customer"]} onSelect={handleRoleSelect} />
+        <DropdownMenu
+          options={["Admin", "Customer"]}
+          onSelect={handleRoleSelect}
+        />
       </div>
     </>
   );
