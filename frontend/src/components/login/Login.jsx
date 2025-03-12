@@ -1,4 +1,5 @@
 import { useMsal } from "@azure/msal-react";
+import { useNavigate } from "react-router-dom";
 import { loginRequest } from "../../authConfig";
 import styles from "./Login.module.css";
 import loginBgImage from "../../assets/login-Image.jpg";
@@ -6,12 +7,26 @@ import ReusableButton from "../common/reusableButton";
 
 export const Login = () => {
   const { instance } = useMsal();
-
+  const navigate = useNavigate();
   const handleLogin = async () => {
     try {
-      await instance.loginPopup(loginRequest);
+      const response = await instance.loginPopup(loginRequest);
+      const account = response.account;
+      const tokenResponse = await instance.acquireTokenSilent({
+        ...loginRequest,
+        account: response.account, // Ensures it retrieves the correct token
+      });
+
+      if (!tokenResponse || !tokenResponse.accessToken) {
+        console.error("No Access Token received!");
+        return;
+      }
+
+      localStorage.setItem("authToken", tokenResponse.accessToken);
+
+      navigate("/wholesalers");
     } catch (error) {
-      alert("Login failed. Please try again!");
+      console.error("Login failed", error);
     }
   };
 
@@ -31,3 +46,5 @@ export const Login = () => {
     </div>
   );
 };
+
+export default Login;
