@@ -1,35 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Typography } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
-import LoginIcon from "@mui/icons-material/Login";
 import { useMsal } from "@azure/msal-react";
-import { loginRequest } from "../../authConfig";
 import ReusableButton from "../common/reusableButton";
-import styles from "./Header.module.css";
+import styles from "./header.module.css";
+import { useNavigate } from "react-router-dom";
 import DropdownMenu from "../common/dropdown/dropdownMenu";
 
 const Header = () => {
-  const { instance, accounts } = useMsal();
-  const isAuthenticated = accounts.length > 0;
-  const [selectedRole, setSelectedRole] = useState("");
+  const { instance } = useMsal();
+  const navigate = useNavigate();
+  const [userName, setUserName] = useState("User");
 
-  const handleRoleSelect = (role) => {
-    setSelectedRole(role);
-  };
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const token = localStorage.getItem("authToken");
+      if (!token) return;
 
-  const handleLogin = async () => {
-    try {
-      await instance.loginPopup(loginRequest);
-    } catch (error) {
-      alert("Login failed. Please try again!");
-    }
-  };
+      try {
+        const response = await fetch("http://localhost:5000/profile", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (response.status === 401) {
+          instance.logoutPopup();
+          return;
+        }
+
+        const data = await response.json();
+        setUserName(data.user?.name || "User");
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   const handleLogout = async () => {
     try {
       await instance.logoutPopup();
+      localStorage.removeItem("authToken"); // ✅ Clear token on logout
+      navigate("/");
+      window.location.href = "/"; // ✅ Redirect to login page
     } catch (error) {
-      alert("Login failed. Please try again!");
+      alert("Logout failed. Please try again!");
     }
   };
 
@@ -37,26 +56,17 @@ const Header = () => {
     <>
       <AppBar position="fixed" className={styles.header}>
         <Toolbar className={styles.toolbar}>
-          {/* Logo */}
           <Typography variant="h6" className={styles.logo}>
             Wholesaler Portal
           </Typography>
 
-          {!isAuthenticated ? (
-            <ReusableButton
-              label="Login with Azure AD"
-              onClick={handleLogin}
-              className={styles.authButton}
-              icon={<LoginIcon />}
-            />
-          ) : (
-            <ReusableButton
-              label="Logout"
-              onClick={handleLogout}
-              className={styles.authButton}
-              icon={<LogoutIcon />}
-            />
-          )}
+          {/* ✅ Show only "Logout" */}
+          <ReusableButton
+            label="Logout"
+            onClick={handleLogout}
+            className={styles.authButton}
+            icon={<LogoutIcon />}
+          />
         </Toolbar>
       </AppBar>
 
@@ -66,10 +76,7 @@ const Header = () => {
           onClick={() => alert("Approve clicked")}
           className={styles.approveButton}
         />
-        <DropdownMenu
-          options={["Admin", "Customer"]}
-          onSelect={handleRoleSelect}
-        />
+        <DropdownMenu options={["Admin", "Customer"]} onSelect={() => {}} />
       </div>
     </>
   );

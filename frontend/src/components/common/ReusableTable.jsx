@@ -4,7 +4,7 @@ import { DataGrid } from "@mui/x-data-grid";
 const ReusableTable = ({
   columns,
   rows,
-  pageSizeOptions = [5, 10, 15],
+  pageSizeOptions = [5, 10, 15, 100],
   checkboxSelection = false,
 }) => {
   return (
