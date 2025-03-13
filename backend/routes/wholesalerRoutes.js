@@ -8,4 +8,9 @@ router
   .post(wholesalerController.createWholesaler)
   .get(wholesalerController.getAllWholesalerData);
 
+// ✅ Get, Update, and Delete by ID
+router
+  .route("/:id")
+  .patch(wholesalerController.updateWholesaler) // Update
+  .delete(wholesalerController.deleteWholesaler); // Delete
 module.exports = router;
