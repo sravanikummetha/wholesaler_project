@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ReusableTable from "../common/reusableTable";
 import { columns } from "../../utils/Tabledata";
 import { getAllWholesalers } from "../../services/wholesalerService";
+import "./WholesalerTable.css";
 
 const WholesalerTable = () => {
   const [wholesalers, setWholesalers] = useState([]);
@@ -30,7 +31,7 @@ const WholesalerTable = () => {
   }, []);
 
   return (
-    <div>
+    <div className="table-container">
       <ReusableTable
         columns={columns}
         rows={wholesalers}
