@@ -22,6 +22,14 @@ export const Login = () => {
         return;
       }
 
+      const idToken = response.idTokenClaims; // Extract ID token claims
+      const userRole = idToken.roles ? idToken.roles[0] : "Customer"; // ✅ Default to "Customer" if no role
+
+      sessionStorage.setItem("authToken", tokenResponse.accessToken);
+      sessionStorage.setItem("userName", idToken.name); // Store user name
+      sessionStorage.setItem("userEmail", idToken.preferred_username);
+      sessionStorage.setItem("userRole", userRole); // Store role in sessionStorage
+
       localStorage.setItem("authToken", tokenResponse.accessToken);
 
       navigate("/wholesalers");

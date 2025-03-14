@@ -4,7 +4,6 @@ export const getAllWholesalers = async () => {
   try {
     const response = await fetch(`${API_BASE_URL}`);
     if (!response.ok) throw new Error("Failed to fetch wholesalers");
-
     const result = await response.json();
     return result.data || []; // Ensure it returns an array
   } catch (error) {
@@ -15,7 +14,7 @@ export const getAllWholesalers = async () => {
 
 
 
-// ✅ Update Wholesaler (PATCH Request)
+// Update Wholesaler (PATCH Request)
 export const updateWholesaler = async (id, updatedData) => {
     try {
       const response = await fetch(`${API_URL}/${id}`, {
@@ -34,10 +33,10 @@ export const updateWholesaler = async (id, updatedData) => {
     }
   };
   
-  // ✅ Delete Wholesaler (Optional)
+  // Delete Wholesaler (Optional)
   export const deleteWholesaler = async (id) => {
     try {
-      const response = await fetch(`${API_URL}/${id}`, {
+      const response = await fetch(`http://localhost:5000/wholesaler/${id}`, {
         method: "DELETE",
       });
   
@@ -48,4 +47,4 @@ export const updateWholesaler = async (id, updatedData) => {
       return false;
     }
   };
-  
+   
