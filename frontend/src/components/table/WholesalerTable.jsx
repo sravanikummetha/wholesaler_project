@@ -5,10 +5,7 @@ import ReusableButton from "../common/reusableButton";
 import ReusableModal from "../common/reusableModal";
 import DropdownMenu from "../common/dropdown/dropdownMenu";
 import { columns } from "../../utils/Tabledata";
-import {
-  getAllWholesalers,
-  deleteWholesaler,
-} from "../../services/wholesalerService";
+import {getAllWholesalers, deleteWholesaler} from "../../services/wholesalerService";
 import "./WholesalerTable.css";
 
 const WholesalerTable = () => {
@@ -35,8 +32,8 @@ const WholesalerTable = () => {
     const fetchWholesalers = async () => {
       try {
         const data = await getAllWholesalers();
-        const formattedData = data.map((item) => ({
-          id: item._id,
+        const formattedData = data.map((item, index) => ({
+          id: index + 1,
           ...item,
         }));
         setWholesalers(formattedData);
