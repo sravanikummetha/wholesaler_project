@@ -5,7 +5,6 @@ import { useMsal } from "@azure/msal-react";
 import ReusableButton from "../common/reusableButton";
 import styles from "./header.module.css";
 import { useNavigate } from "react-router-dom";
-import DropdownMenu from "../common/dropdown/dropdownMenu";
 
 const Header = () => {
   const { instance } = useMsal();
@@ -44,41 +43,29 @@ const Header = () => {
   const handleLogout = async () => {
     try {
       await instance.logoutPopup();
-      localStorage.removeItem("authToken"); // ✅ Clear token on logout
+      localStorage.removeItem("authToken");
       navigate("/");
-      window.location.href = "/"; // ✅ Redirect to login page
+      window.location.href = "/";
     } catch (error) {
       alert("Logout failed. Please try again!");
     }
   };
 
   return (
-    <>
-      <AppBar position="fixed" className={styles.header}>
-        <Toolbar className={styles.toolbar}>
-          <Typography variant="h6" className={styles.logo}>
-            Wholesaler Portal
-          </Typography>
+    <AppBar position="fixed" className={styles.header}>
+      <Toolbar className={styles.toolbar}>
+        <Typography variant="h6" className={styles.logo}>
+          Wholesaler Portal
+        </Typography>
 
-          {/* ✅ Show only "Logout" */}
-          <ReusableButton
-            label="Logout"
-            onClick={handleLogout}
-            className={styles.authButton}
-            icon={<LogoutIcon />}
-          />
-        </Toolbar>
-      </AppBar>
-
-      <div className={styles.actionContainer}>
         <ReusableButton
-          label="Approve"
-          onClick={() => alert("Approve clicked")}
-          className={styles.approveButton}
+          label="Logout"
+          onClick={handleLogout}
+          className={styles.authButton}
+          icon={<LogoutIcon />}
         />
-        <DropdownMenu options={["Admin", "Customer"]} onSelect={() => {}} />
-      </div>
-    </>
+      </Toolbar>
+    </AppBar>
   );
 };
 

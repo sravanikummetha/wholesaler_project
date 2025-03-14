@@ -6,6 +6,7 @@ const ReusableTable = ({
   rows,
   pageSizeOptions = [5, 10, 15, 100],
   checkboxSelection = false,
+  onRowDoubleClick,
 }) => {
   return (
     <div className="table-container">
@@ -15,6 +16,7 @@ const ReusableTable = ({
         pageSizeOptions={pageSizeOptions}
         getRowId={(row) => row.id}
         checkboxSelection={checkboxSelection}
+        onRowDoubleClick={onRowDoubleClick} // Capture double-click event
       />
     </div>
   );
