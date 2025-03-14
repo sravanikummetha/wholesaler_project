@@ -14,9 +14,9 @@ import "./WholesalerTable.css";
 const WholesalerTable = () => {
   const [wholesalers, setWholesalers] = useState([]);
   const [userRole, setUserRole] = useState("Customer");
-  const [selectedRowIds, setSelectedRowIds] = useState([]); // ✅ Track selected checkboxes
+  const [selectedRowIds, setSelectedRowIds] = useState([]); // Track selected checkboxes
   const [open, setOpen] = useState(false); // Modal state
-  const [selectedWholesaler, setSelectedWholesaler] = useState(null); // ✅ Track selected wholesaler for update
+  const [selectedWholesaler, setSelectedWholesaler] = useState(null); // Track selected wholesaler for update
   const [formData, setFormData] = useState({
     name: "",
     category: "",
@@ -156,28 +156,36 @@ const WholesalerTable = () => {
     <div className="table-container">
       {/* Role display and action buttons BELOW Header */}
       <div className="actionContainer">
-        <Typography variant="h6" className="userRole">
-          Logged in as: <strong>{userRole}</strong>
-        </Typography>
+        <div className="leftActions">
+          <Typography variant="h6" className="userRole">
+            Logged in as: <strong>{userRole}</strong>
+          </Typography>
 
-        {/* Add Wholesaler Button */}
-        <ReusableButton label="Add Wholesaler" onClick={() => setOpen(true)} />
+          {/* Add Wholesaler Button */}
+          <ReusableButton
+            label="Add Wholesaler"
+            onClick={() => setOpen(true)}
+          />
 
-        {/* Delete Button (Enabled only when a checkbox is selected) */}
-        <ReusableButton
-          label="Delete"
-          onClick={handleDelete}
-          disabled={selectedRowIds.length === 0}
-        />
+          {/* Delete Button (Enabled only when a checkbox is selected) */}
+          <ReusableButton
+            label="Delete"
+            onClick={handleDelete}
+            disabled={selectedRowIds.length === 0}
+          />
+        </div>
+        <div className="rightActions">
+          {/* Approve Button */}
+          {userRole === "Admin" && (
+            <ReusableButton
+              label="Approve"
+              onClick={() => alert("Approve clicked")}
+            />
+          )}
 
-        {/* Approve Button */}
-        <ReusableButton
-          label="Approve"
-          onClick={() => alert("Approve clicked")}
-        />
-
-        {/* Dropdown for Role Selection */}
-        <DropdownMenu options={["Admin", "Customer"]} onSelect={() => {}} />
+          {/* Dropdown for Role Selection */}
+          <DropdownMenu options={["Admin", "Customer"]} onSelect={() => {}} />
+        </div>
       </div>
 
       {/* Reusable Modal for Form */}
@@ -191,7 +199,6 @@ const WholesalerTable = () => {
         onSubmit={handleSubmit}
       >
         <Grid container spacing={2}>
-          {/* Row 1 */}
           <Grid item xs={4}>
             <TextField
               fullWidth
@@ -223,7 +230,6 @@ const WholesalerTable = () => {
             />
           </Grid>
 
-          {/* Row 2 */}
           <Grid item xs={4}>
             <TextField
               fullWidth
@@ -258,7 +264,6 @@ const WholesalerTable = () => {
             />
           </Grid>
 
-          {/* Row 3 */}
           <Grid item xs={4}>
             <TextField
               fullWidth
@@ -292,7 +297,6 @@ const WholesalerTable = () => {
             />
           </Grid>
 
-          {/* Row 4 */}
           <Grid item xs={4}>
             <TextField
               fullWidth
@@ -319,7 +323,6 @@ const WholesalerTable = () => {
         </Grid>
       </ReusableModal>
 
-      {/* Table Component */}
       <ReusableTable
         columns={[
           {
@@ -338,7 +341,7 @@ const WholesalerTable = () => {
         ]}
         rows={wholesalers}
         checkboxSelection={false} // No automatic checkboxes
-        onRowDoubleClick={(params) => handleRowDoubleClick(params.row)} // ✅ Enable delete on double-click
+        onRowDoubleClick={(params) => handleRowDoubleClick(params.row)} // Enable delete on double-click
       />
     </div>
   );
