@@ -11,27 +11,27 @@
 }
 
 .table-container {
-  margin-top: 80px;
-  padding: 20px;
+  margin-top: 55px;
+  padding: 15px;
 }
 
 .actionContainer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-  }
-  
-  .leftActions {
-    display: flex;
-    gap: 15px;
-  }
-  
-  .rightActions {
-    display: flex;
-    gap: 15px; 
-    align-items: center;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.leftActions {
+  display: flex;
+  gap: 15px;
+}
+
+.rightActions {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
 .userRole {
   font-size: 18px;
   font-weight: bold;
