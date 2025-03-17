@@ -1,4 +1,5 @@
 const Wholesaler = require("../models/wholesalerModels");
+const mongoose = require("mongoose");
 
 exports.createWholesaler = async (req, res) => {
   try {
@@ -35,7 +36,7 @@ exports.getAllWholesalerData = async (req, res) => {
   }
 };
 
-// ✅ Update a Wholesaler
+// Update a Wholesaler
 exports.updateWholesaler = async (req, res) => {
   try {
     const updatedWholesaler = await Wholesaler.findByIdAndUpdate(
@@ -65,9 +66,16 @@ exports.updateWholesaler = async (req, res) => {
   }
 };
 
-// ✅ Delete a Wholesaler
+// Delete a Wholesaler
 exports.deleteWholesaler = async (req, res) => {
   try {
+    // Ensure the ID is valid before proceeding
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res
+        .status(400)
+        .json({ status: "fail", message: "Invalid wholesaler ID format" });
+    }
+
     const wholesaler = await Wholesaler.findByIdAndDelete(req.params.id);
 
     if (!wholesaler) {
@@ -76,14 +84,8 @@ exports.deleteWholesaler = async (req, res) => {
         .json({ status: "fail", message: "Wholesaler not found" });
     }
 
-    res.status(204).json({
-      status: "success",
-      data: null, // No content after deletion
-    });
+    return res.status(204).send(); // Correct response for DELETE success
   } catch (err) {
-    res.status(400).json({
-      status: "fail",
-      message: err.message,
-    });
+    return res.status(500).json({ status: "error", message: err.message });
   }
 };
