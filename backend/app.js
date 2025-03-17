@@ -7,12 +7,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const DB = "mongodb+srv://admin:8mwyl6WVykCfBcqu@test.zp0ep.mongodb.net/test";
-mongoose
-  .connect(DB)
-  .then(() => console.log("Connected to DB successfully"))
-  .catch((error) => console.error("DB connection error:", error));
-
+if (process.env.NODE_ENV !== "test") {
+  const DB = "mongodb+srv://admin:8mwyl6WVykCfBcqu@test.zp0ep.mongodb.net/test";
+  mongoose
+    .connect(DB, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log("Connected to DB successfully"))
+    .catch((error) => console.error("DB connection error:", error));
+}
 app.get("/profile", async (req, res) => {
   try {
     console.log("Profile API hit! User:", req.user);
@@ -25,5 +26,9 @@ app.get("/profile", async (req, res) => {
 
 app.use("/wholesaler", wholesalerRoutes);
 
-const port = process.env.PORT || 5000;
-app.listen(port, () => console.log(`🚀 Server running on port ${port}`));
+if (process.env.NODE_ENV !== "test") {
+  const port = process.env.PORT || 5000;
+  app.listen(port, () => console.log(`🚀 Server running on port ${port}`));
+}
+
+module.exports = app;
