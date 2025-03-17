@@ -32,8 +32,8 @@ const WholesalerTable = () => {
     const fetchWholesalers = async () => {
       try {
         const data = await getAllWholesalers();
-        const formattedData = data.map((item, index) => ({
-          id: index + 1,
+        const formattedData = data.map((item) => ({
+          id: item._id,
           ...item,
         }));
         setWholesalers(formattedData);
