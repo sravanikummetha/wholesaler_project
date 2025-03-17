@@ -5,10 +5,7 @@ import ReusableButton from "../common/reusableButton";
 import ReusableModal from "../common/reusableModal";
 import DropdownMenu from "../common/dropdown/dropdownMenu";
 import { columns } from "../../utils/Tabledata";
-import {
-  getAllWholesalers,
-  deleteWholesaler,
-} from "../../services/wholesalerService";
+import {getAllWholesalers, deleteWholesaler} from "../../services/wholesalerService";
 import "./WholesalerTable.css";
 
 const WholesalerTable = () => {
