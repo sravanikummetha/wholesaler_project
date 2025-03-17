@@ -42,7 +42,7 @@ describe("API Endpoint Tests", () => {
   });
 
   test("DELETE /wholesaler/:id should delete a wholesaler", async () => {
-    // ✅ First, create a wholesaler to get a valid ID
+    // First, create a wholesaler to get a valid ID
     const newWholesaler = await request(app).post("/wholesaler").send({
       name: "Test Wholesaler",
       category: "Grocery",
@@ -51,13 +51,13 @@ describe("API Endpoint Tests", () => {
       phone: "9876543210",
     });
 
-    const createdWholesalerId = newWholesaler.body.data.tour._id; // ✅ Store the actual ID
+    const createdWholesalerId = newWholesaler.body.data.tour._id; // Store the actual ID
 
-    // ✅ Use the correct ID in DELETE request
+    // Use the correct ID in DELETE request
     const deleteResponse = await request(app).delete(
       `/wholesaler/${createdWholesalerId}`
     );
 
-    expect(deleteResponse.status).toBe(204); // ✅ Now should return 204
+    expect(deleteResponse.status).toBe(204); // Now should return 204
   });
 });
