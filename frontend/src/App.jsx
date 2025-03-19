@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useMsal } from "@azure/msal-react";
-import Header from "./components/header/header";
-import WholesalerTable from "./components/table/wholesalerTable";
 import Login from "./components/login/login";
 import AppRoutes from "./routes/appRoutes";
 import "./App.css";

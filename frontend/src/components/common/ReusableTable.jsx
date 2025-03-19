@@ -23,6 +23,12 @@ const ReusableTable = ({
         getRowId={(row) => row.id}
         checkboxSelection={checkboxSelection}
         onRowDoubleClick={onRowDoubleClick}
+        disableSelectionOnClick
+        sx={{
+          "& .MuiDataGrid-selectedRowCount": { display: "none" }, // Hide 'X rows selected'
+          "& .MuiDataGrid-footerContainer": { justifyContent: "flex-end" }, // Keep pagination on the right
+          "& .MuiTablePagination-root": { justifyContent: "flex-end", width: "100%" }, // Ensures alignment stays right
+        }}
       />
     </div>
   );
