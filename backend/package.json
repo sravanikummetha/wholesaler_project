@@ -17,7 +17,9 @@
     "express": "^4.21.2",
     "jwks-rsa": "^3.1.0",
     "mongoose": "^8.11.0",
-    "msal-node": "^0.0.1-security"
+    "msal-node": "^0.0.1-security",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
