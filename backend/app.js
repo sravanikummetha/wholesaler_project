@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const wholesalerRoutes = require("./routes/wholesalerRoutes");
+const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
 
 const app = express();
 app.use(cors());
@@ -23,6 +25,22 @@ app.get("/profile", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" }); // Return JSON on errors
   }
 });
+
+// Swagger Setup
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Wholesaler API",
+      version: "1.0.0",
+      description: "API documentation for Wholesaler Management",
+    },
+  },
+  apis: ["./routes/*.js"], // Ensure your route files are inside the "routes" folder
+};
+
+const swaggerDocs = swaggerJsdoc(swaggerOptions);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use("/wholesaler", wholesalerRoutes);
 
