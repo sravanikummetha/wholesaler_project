@@ -38,8 +38,8 @@
   color: #333;
 }
 
-.approveButton {
-  background-color: #4caf50 !important;
+.approve-button:not(:disabled) {
+  background-color: green !important;
   color: white !important;
 }
 
