@@ -13,6 +13,8 @@
 .table-container {
   margin-top: 55px;
   padding: 15px;
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 .actionContainer {
