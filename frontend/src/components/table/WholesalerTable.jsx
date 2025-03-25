@@ -342,6 +342,7 @@ const WholesalerTable = () => {
         ]}
         rows={wholesalers}
         checkboxSelection={false} // No automatic checkboxes
+        autoHeight // Makes table adjust to content height
         onRowDoubleClick={(params) => handleRowDoubleClick(params.row)} // Enable delete on double-click
       />
     </div>
