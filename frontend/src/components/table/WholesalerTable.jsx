@@ -5,6 +5,7 @@ import ReusableButton from "../common/reusableButton";
 import ReusableModal from "../common/reusableModal";
 import DropdownMenu from "../common/dropdown/dropdownMenu";
 import { columns } from "../../utils/Tabledata";
+import * as XLSX from "xlsx";
 import { getAllWholesalers, deleteWholesaler } from "../../services/wholesalerService";
 import "./WholesalerTable.css";
 
@@ -39,17 +40,33 @@ const WholesalerTable = () => {
 
   const fetchWholesalers = async () => {
     try {
-      const data = await getAllWholesalers();
-      const formattedData = data.map((item, index) => ({
+      const data = await getAllWholesalers(); // Fetch all wholesalers
+      const userEmail = sessionStorage.getItem("userEmail"); // Get logged-in user's email
+      const userRole = sessionStorage.getItem("userRole"); // Get logged-in user's role
+  
+      const filteredData = userRole === "Admin" 
+        ? data // Admin sees all data
+        : data.filter((item) => item.email === userEmail); // Customer sees only their row
+  
+      const formattedData = filteredData.map((item, index) => ({
         id: index + 1,
+        _id: item._id, // Ensure `id` exists for MUI DataGrid
         ...item,
       }));
+  
       setWholesalers(formattedData);
     } catch (error) {
       console.error("Failed to fetch wholesalers:", error);
     }
   };
 
+  const exportToCSV = () => {
+    const worksheet = XLSX.utils.json_to_sheet(wholesalers);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Wholesalers");
+    XLSX.writeFile(workbook, "wholesalers_data.xlsx");
+  };
+  
   // Handle input change in modal form
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -61,62 +78,41 @@ const WholesalerTable = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return; // Prevent submission if validation fails
-
+  
     try {
       let response;
-
+      const adminEmail = sessionStorage.getItem("userEmail");
+  
+      const newWholesaler = { 
+        ...formData, 
+        addedBy: formData.email  // Assign the entered email for filtering later
+      };
+  
       if (selectedWholesaler) {
-        // Update existing wholesaler (PATCH)
-        response = await fetch(
-          `http://localhost:5000/wholesaler/${selectedWholesaler._id}`,
-          {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(formData),
-          }
-        );
+        response = await fetch(`http://localhost:5000/wholesaler/${selectedWholesaler._id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newWholesaler),
+        });
       } else {
-        // Add new wholesaler (POST)
         response = await fetch("http://localhost:5000/wholesaler", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...newWholesaler, addedBy: adminEmail }),
         });
       }
-
+  
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
-
-      const result = await response.json();
-      // Update the table
-      fetchWholesalers();
-      // Reset form and modal state
-      setFormData({
-        name: "",
-        category: "",
-        location: "",
-        email: "",
-        phone: "",
-        orders: "",
-        revenue: "",
-        creditLimit: "",
-        warehouse: "",
-        discount: "",
-        rating: "",
-      });
-
-      setSelectedWholesaler(null); // Clear selected wholesaler
-      handleClose(); // Close the modal
+  
+      fetchWholesalers(); // Refresh table
+      handleClose();
     } catch (error) {
       console.error("Failed to add/update wholesaler:", error);
     }
   };
-
+  
   // Validation Function
   const validateForm = () => {
     let newErrors = {};
@@ -240,19 +236,21 @@ const WholesalerTable = () => {
           <Typography variant="h6" className="userRole">
             Logged in as: <strong>{userRole}</strong>
           </Typography>
-
           {/* Add Wholesaler Button */}
-          <ReusableButton
-            label="Add Wholesaler"
-            onClick={() => setOpen(true)}
-          />
+          {userRole === "Admin" && (
+            <ReusableButton
+              label="Add Wholesaler"
+              onClick={() => setOpen(true)}
+            />
+          )}
 
-          {/* Delete Button (Enabled only when a checkbox is selected) */}
-          <ReusableButton
-            label="Delete"
-            onClick={handleDelete}
-            disabled={selectedRowIds.length === 0}
-          />
+          {userRole === "Admin" && (
+            <ReusableButton
+              label="Delete"
+              onClick={handleDelete}
+              disabled={selectedRowIds.length === 0}
+            />
+          )}
         </div>
         <div className="rightActions">
           {/* Approve Button */}
@@ -261,9 +259,11 @@ const WholesalerTable = () => {
               label="Approve"
               onClick={handleApprove}
               disabled={selectedRowIds.length === 0}
+              className="approve-button"
             />
           )}
 
+          <ReusableButton label="Export to CSV" onClick={exportToCSV} />
           {/* Dropdown for Role Selection */}
           <DropdownMenu options={["Admin", "Customer"]} onSelect={() => {}} />
         </div>
